@@ -4,10 +4,12 @@ import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.github.xiaoymin.knife4j.annotations.ApiSort;
 import com.zhoujian.httpdemo.domain.User;
 import com.zhoujian.httpdemo.domain.vo.Result;
+import com.zhoujian.httpdemo.service.HttpServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,6 +28,9 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(tags = "模板控制器案例")
 @ApiSort(1)
 public class TemplateController {
+
+    @Autowired
+    HttpServiceImpl httpService;
 
     @ApiOperation(value = "GET请求不带参数")
     @GetMapping(value = "/test")
@@ -53,5 +58,21 @@ public class TemplateController {
     @ApiOperationSupport(order = 4)
     public Result test3(@RequestBody @ApiParam("用户") User user) {
         return Result.OK("POST测试成功：" + user.toString());
+    }
+
+    @PostMapping(value = "/testGet1")
+    @ApiOperation(value = "进行Get测试告警")
+    @ApiOperationSupport(order = 5)
+    public Result testGet1() {
+        httpService.test01();
+        return Result.OK("测试成功");
+    }
+
+    @PostMapping(value = "/testGet2")
+    @ApiOperation(value = "进行Get测试告警")
+    @ApiOperationSupport(order = 6)
+    public Result testGet2() {
+        httpService.test02();
+        return Result.OK("测试成功");
     }
 }
