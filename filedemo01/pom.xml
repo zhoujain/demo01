@@ -11,7 +11,7 @@
     <groupId>com.zhoujian</groupId>
     <artifactId>file</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>file</name>
+    <name>filedemo01</name>
     <description>文件操作测试</description>
     <properties>
         <java.version>1.8</java.version>
