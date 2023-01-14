@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.zhoujian</groupId>
-    <artifactId>template</artifactId>
+    <artifactId>httpdemo</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>template</name>
-    <description>模板可以粘贴需要部分</description>
+    <name>httpdemo</name>
+    <description>http测试</description>
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

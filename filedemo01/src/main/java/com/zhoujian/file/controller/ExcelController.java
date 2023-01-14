@@ -39,9 +39,9 @@ public class ExcelController {
     @ApiOperation(value = "导入excel")
     @PostMapping(value = "/import")
     @ApiOperationSupport(order = 1)
-    @ApiImplicitParam(name = "file",value = "批量签名文件导入",required = true,dataType="MultipartFile",allowMultiple = true,paramType = "query")
+    @ApiImplicitParam(name = "file", value = "批量签名文件导入", required = true, dataType = "MultipartFile", allowMultiple = true, paramType = "query")
     public Result<JSONArray> uploadWay2(@RequestParam("file") MultipartFile[] file,
-                                HttpServletRequest request) {
+                                        HttpServletRequest request) {
         Result<JSONArray> result = new Result<>();
 
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
@@ -62,9 +62,9 @@ public class ExcelController {
     @ApiOperation(value = "导入excel转为对象")
     @PostMapping(value = "/importToClass")
     @ApiOperationSupport(order = 1)
-    @ApiImplicitParam(name = "file",value = "批量签名文件导入",required = true,dataType="MultipartFile",allowMultiple = true,paramType = "query")
+    @ApiImplicitParam(name = "file", value = "批量签名文件导入", required = true, dataType = "MultipartFile", allowMultiple = true, paramType = "query")
     public Result<List<User>> importToClass(@RequestParam("file") MultipartFile[] file,
-                                        HttpServletRequest request) {
+                                            HttpServletRequest request) {
         Result<List<User>> result = new Result<>();
 
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
@@ -85,9 +85,9 @@ public class ExcelController {
     @ApiOperation(value = "导入excel多个sheet转为")
     @PostMapping(value = "/importToMany")
     @ApiOperationSupport(order = 1)
-    @ApiImplicitParam(name = "file",value = "批量签名文件导入",required = true,dataType="MultipartFile",allowMultiple = true,paramType = "query")
+    @ApiImplicitParam(name = "file", value = "批量签名文件导入", required = true, dataType = "MultipartFile", allowMultiple = true, paramType = "query")
     public Result<?> importToMany(@RequestParam("file") MultipartFile[] file,
-                                            HttpServletRequest request) {
+                                  HttpServletRequest request) {
         Result<List<User>> result = new Result<>();
 
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
@@ -95,7 +95,7 @@ public class ExcelController {
 
         try {
             Map<String, JSONArray> map = ExcelUtils.readFileManySheet(file2);
-            map.forEach((key,value) ->{
+            map.forEach((key, value) -> {
                 System.out.println("Sheet名称:" + key);
                 System.out.println("Sheet数据:" + value);
                 System.out.println("--------------------");
@@ -115,7 +115,7 @@ public class ExcelController {
     public void export(HttpServletResponse response) {
         Result<?> result = new Result<>();
         // 表头数据
-        List<Object> head = Arrays.asList("姓名","年龄","性别","头像");
+        List<Object> head = Arrays.asList("姓名", "年龄", "性别", "头像");
         // 用户1数据
         List<Object> user1 = new ArrayList<>();
         user1.add("诸葛亮");
@@ -134,7 +134,7 @@ public class ExcelController {
         sheetDataList.add(user1);
         sheetDataList.add(user2);
         // 导出数据
-        ExcelUtils.export(response,"用户表", sheetDataList);
+        ExcelUtils.export(response, "用户表", sheetDataList);
 
     }
 }

@@ -1,6 +1,6 @@
-package com.zhoujian.file.domain.vo;
+package com.zhoujian.httpdemo.domain.vo;
 
-import com.zhoujian.file.constant.CommonConstant;
+import com.zhoujian.httpdemo.constant.CommonConstant;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

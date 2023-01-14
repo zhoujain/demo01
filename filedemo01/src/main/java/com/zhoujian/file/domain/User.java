@@ -21,7 +21,7 @@ public class User {
     @ExcelImport("年龄")
     private Integer age;
 
-    @ExcelImport(value = "性别",kv = "1-男;2-女")
+    @ExcelImport(value = "性别", kv = "1-男;2-女")
     private String sex;
 
     // 设置最大长度

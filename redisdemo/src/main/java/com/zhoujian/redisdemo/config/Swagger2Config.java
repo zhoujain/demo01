@@ -38,8 +38,6 @@ import java.util.stream.Collectors;
 public class Swagger2Config {
 
 
-
-
     @Bean(value = "defaultApi2")
     public Docket defaultApi2() {
         return new Docket(DocumentationType.SWAGGER_2)
@@ -78,7 +76,7 @@ public class Swagger2Config {
                 // 描述
                 .description("后台API接口")
                 // 作者
-                .contact(new Contact("ZJ","www.xxx.com","xx"))
+                .contact(new Contact("ZJ", "www.xxx.com", "xx"))
                 .build();
     }
 

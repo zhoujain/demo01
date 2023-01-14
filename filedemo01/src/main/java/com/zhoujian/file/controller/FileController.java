@@ -39,34 +39,34 @@ public class FileController {
     @ApiOperation(value = "测试")
     @PostMapping(value = "/upload")
     @ApiOperationSupport(order = 1)
-    @ApiImplicitParam(name = "file",value = "批量签名文件导入",required = true,dataType="MultipartFile",allowMultiple = true,paramType = "query")
-    public Result<?> upload(@RequestParam("file")MultipartFile[] file) {
+    @ApiImplicitParam(name = "file", value = "批量签名文件导入", required = true, dataType = "MultipartFile", allowMultiple = true, paramType = "query")
+    public Result<?> upload(@RequestParam("file") MultipartFile[] file) {
         return Result.OK("测试成功");
     }
 
     @ApiOperation(value = "上传文件入参方式2")
     @PostMapping(value = "/uploadWay2")
     @ApiOperationSupport(order = 1)
-    @ApiImplicitParam(name = "file",value = "批量签名文件导入",required = true,dataType="MultipartFile",allowMultiple = true,paramType = "query")
-    public Result<?> uploadWay2(@RequestParam("file")MultipartFile[] file,
-                                @RequestParam(value = "path",required = false)@ApiParam("文件上传路径") String path,
+    @ApiImplicitParam(name = "file", value = "批量签名文件导入", required = true, dataType = "MultipartFile", allowMultiple = true, paramType = "query")
+    public Result<?> uploadWay2(@RequestParam("file") MultipartFile[] file,
+                                @RequestParam(value = "path", required = false) @ApiParam("文件上传路径") String path,
                                 HttpServletRequest request) {
         Result<?> result = new Result<>();
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
         MultipartFile file2 = multipartRequest.getFile("file");
 
         String savePath = this.uploadLocal(file2, path);
-        if (StrUtil.isEmpty(savePath)){
+        if (StrUtil.isEmpty(savePath)) {
             result.setMessage("上传失败！");
             result.setSuccess(false);
-        }else {
+        } else {
             result.setMessage(savePath);
             result.setSuccess(true);
         }
         return result;
     }
 
-    private String uploadLocal(MultipartFile mf,String path){
+    private String uploadLocal(MultipartFile mf, String path) {
 
         try {
             String ctxPath = uploadPath;
@@ -77,7 +77,7 @@ public class FileController {
             // 前缀没有/就是相对路径  有/ 会默认加添加盘符
 
             File file = new File(ctxPath + File.separator + path + File.separator);
-            if (!file.exists()){
+            if (!file.exists()) {
                 file.mkdir();
             }
 
@@ -85,20 +85,20 @@ public class FileController {
             String originalFilename = mf.getOriginalFilename();
             originalFilename = CommonUtils.getFileName(originalFilename);
             String fileName = "";
-            if (originalFilename.contains(".")){
-                fileName = originalFilename.substring(0,originalFilename.lastIndexOf(".")) + "_" + System.currentTimeMillis() + originalFilename.substring(originalFilename.lastIndexOf("."));
-            }else {
+            if (originalFilename.contains(".")) {
+                fileName = originalFilename.substring(0, originalFilename.lastIndexOf(".")) + "_" + System.currentTimeMillis() + originalFilename.substring(originalFilename.lastIndexOf("."));
+            } else {
                 fileName = originalFilename + "_" + System.currentTimeMillis();
             }
             File saveFile = new File(file.getPath() + File.separator + fileName);
             System.out.println(saveFile.getCanonicalPath());
             System.out.println(saveFile.getAbsolutePath());
 
-            FileCopyUtils.copy(mf.getBytes(),saveFile);
+            FileCopyUtils.copy(mf.getBytes(), saveFile);
             String dbPath = "";
-            if (StrUtil.isEmpty(path)){
+            if (StrUtil.isEmpty(path)) {
                 dbPath = path + File.separator + fileName;
-            }else {
+            } else {
                 dbPath = fileName;
             }
 
@@ -107,7 +107,7 @@ public class FileController {
             }
             return dbPath;
         } catch (IOException e) {
-            log.error(e.getMessage(),e);
+            log.error(e.getMessage(), e);
         }
         return "";
     }

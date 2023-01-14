@@ -27,21 +27,21 @@ public class CommonUtils {
      * @param fileName
      * @return
      */
-    public static String getFileName(String fileName){
+    public static String getFileName(String fileName) {
         int unixSep = fileName.lastIndexOf("/");
         int winSep = fileName.lastIndexOf("\\");
 
         int pos = Math.max(winSep, unixSep);
 
-        if (pos != -1){
+        if (pos != -1) {
             fileName = fileName.substring(pos + 1);
         }
 
         //替换上传文件名字的特殊字符
-        fileName = fileName.replace("=","").replace(",","").replace("&","")
+        fileName = fileName.replace("=", "").replace(",", "").replace("&", "")
                 .replace("#", "").replace("“", "").replace("”", "");
         //替换上传文件名字中的空格
-        fileName=fileName.replaceAll("\\s","");
+        fileName = fileName.replaceAll("\\s", "");
         //update-beign-author:taoyan date:20220302 for: /issues/3381 online 在线表单 使用文件组件时，上传文件名中含%，下载异常
         fileName = fileName.replaceAll(FILE_NAME_REGEX, "");
         //update-end-author:taoyan date:20220302 for: /issues/3381 online 在线表单 使用文件组件时，上传文件名中含%，下载异常
