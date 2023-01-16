@@ -9,6 +9,7 @@ import redis.clients.jedis.JedisSentinelPool;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -93,6 +94,24 @@ public class JedisRedisUtils {
         jedisCluster.set("okayjam", "www.okayjam.com");
         // 读取key
         System.out.println(jedisCluster.get("okayjam"));
+
+
+        // Map<String, JedisPool> clusterNodes = jedisCluster.getClusterNodes();
+        // Jedis jedis = null;
+        // for (String s : clusterNodes.keySet()) {
+        //     JedisPool jedisPool = clusterNodes.get(s);
+        //     Jedis resource = jedisPool.getResource();
+        //     if (!resource.info("replication").contains("role:slave")) {
+        //         jedis = resource;
+        //         log.info("master_address:{}",s);
+        //
+        //         String ping = jedis.ping();
+        //         if (!ping.equalsIgnoreCase("PONG"))return null;
+        //         break;
+        //     }else{
+        //         resource.close();
+        //     }
+        // }
     }
 
     public static void main(String[] args) {
