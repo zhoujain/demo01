@@ -162,4 +162,34 @@
         </resources>
     </build>
 
+    <!-- 环境 -->
+    <profiles>
+<!--       单机连接-->
+        <profile>
+            <id>single</id>
+            <activation>
+                <!--默认激活配置-->
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <!--当前环境,生产环境为空-->
+                <profile.name>single</profile.name>
+
+            </properties>
+        </profile>
+<!--         哨兵连接-->
+        <profile>
+            <id>sentine</id>
+            <properties>
+                <profile.name>sentine</profile.name>
+            </properties>
+        </profile>
+<!--         集群连接-->
+        <profile>
+            <id>cluster</id>
+            <properties>
+                <profile.name>cluster</profile.name>
+            </properties>
+        </profile>
+    </profiles>
 </project>
