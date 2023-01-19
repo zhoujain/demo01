@@ -24,6 +24,11 @@ spring:
     password:
     port: 6379
     timeout: 4000
+    sentinel:
+      nodes: 172.20.20.175:25379,172.20.20.176:25379,172.20.20.177:25379
+      master: mymaster
+      password: Ntdh@123
+      enable: false #是否关闭哨兵连接
   mvc:
     static-path-pattern: /**
     #Spring Boot 2.6+后映射匹配的默认策略已从AntPathMatcher更改为PathPatternParser,需要手动指定为ant-path-matcher

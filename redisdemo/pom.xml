@@ -181,7 +181,7 @@
         <profile>
             <id>sentine</id>
             <properties>
-                <profile.name>sentine</profile.name>
+                <profile.name>sentinel</profile.name>
             </properties>
         </profile>
 <!--         集群连接-->

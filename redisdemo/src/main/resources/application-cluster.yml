@@ -24,6 +24,10 @@ spring:
     password:
     port: 6379
     timeout: 4000
+    cluster:
+      nodes: 172.20.22.91:6379,172.20.22.91:6380,172.20.22.91:6381,172.20.22.91:6382,172.20.22.91:6383,172.20.22.91:6384
+      #nodes: 172.20.22.7:6379,172.20.22.8:6379,172.20.22.9:6379,172.20.22.10:6379,172.20.22.11:6379,172.20.22.12:6379
+      max-redirects: 3  # 获取失败 最大重定向次数
   mvc:
     static-path-pattern: /**
     #Spring Boot 2.6+后映射匹配的默认策略已从AntPathMatcher更改为PathPatternParser,需要手动指定为ant-path-matcher

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zhoujian.redisdemo.constant.CacheConstant;
+import jdk.nashorn.internal.runtime.GlobalConstants;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
@@ -13,8 +14,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.cache.RedisCacheWriter;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.listener.ChannelTopic;
+import org.springframework.data.redis.listener.RedisMessageListenerContainer;
+import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.RedisSerializer;
@@ -109,4 +114,27 @@ public class RedisConfig extends CachingConfigurerSupport {
         //update-end-author:taoyan date:20210316 for:注解CacheEvict根据key删除redis支持通配符*
         return cacheManager;
     }
+
+
+    /**
+     * redis 监听配置
+     *
+     * @param redisConnectionFactory redis 配置
+     * @return
+     */
+    // @Bean
+    // public RedisMessageListenerContainer redisContainer(RedisConnectionFactory redisConnectionFactory, RedisReceiver redisReceiver, MessageListenerAdapter commonListenerAdapter) {
+    //     RedisMessageListenerContainer container = new RedisMessageListenerContainer();
+    //     container.setConnectionFactory(redisConnectionFactory);
+    //     container.addMessageListener(commonListenerAdapter, new ChannelTopic(GlobalConstants.REDIS_TOPIC_NAME));
+    //     return container;
+    // }
+
+
+    // @Bean
+    // MessageListenerAdapter commonListenerAdapter(RedisReceiver redisReceiver) {
+    //     MessageListenerAdapter messageListenerAdapter = new MessageListenerAdapter(redisReceiver, "onMessage");
+    //     messageListenerAdapter.setSerializer(jacksonSerializer());
+    //     return messageListenerAdapter;
+    // }
 }
