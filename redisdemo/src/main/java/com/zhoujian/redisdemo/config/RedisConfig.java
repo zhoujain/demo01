@@ -3,16 +3,26 @@ package com.zhoujian.redisdemo.config;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.zhoujian.redisdemo.constant.CacheConstant;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.cache.RedisCacheConfiguration;
+import org.springframework.data.redis.cache.RedisCacheManager;
+import org.springframework.data.redis.cache.RedisCacheWriter;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+
+import java.time.Duration;
+
+import static java.util.Collections.singletonMap;
 
 /**
  * @ClassName RedisConfig
@@ -58,5 +68,45 @@ public class RedisConfig extends CachingConfigurerSupport {
         objectMapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
         jackson2JsonRedisSerializer.setObjectMapper(objectMapper);
         return jackson2JsonRedisSerializer;
+    }
+
+
+
+    /**
+     * 缓存配置管理器 指定方法如何缓存
+     *
+     * @param factory
+     * @return
+     */
+    @Bean
+    public CacheManager cacheManager(LettuceConnectionFactory factory) {
+        Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = jacksonSerializer();
+        // 配置序列化（解决乱码的问题）,并且配置缓存默认有效期 6小时
+        RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofHours(6));
+        // key value序列化
+        RedisCacheConfiguration redisCacheConfiguration = config.serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))
+                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(jackson2JsonRedisSerializer));
+        //.disableCachingNullValues();
+
+        // 以锁写入的方式创建RedisCacheWriter对象
+        //update-begin-author:taoyan date:20210316 for:注解CacheEvict根据key删除redis支持通配符*
+        // 自定义的 可以去除
+        RedisCacheWriter writer = new MyRedisCacheWriter(factory, Duration.ofMillis(50L));
+        //RedisCacheWriter.lockingRedisCacheWriter(factory);
+        // 创建默认缓存配置对象
+        /* 默认配置，设置缓存有效期 1小时*/
+        //RedisCacheConfiguration defaultCacheConfig = RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofHours(1));
+        /* 自定义配置test:demo 的超时时间为 5分钟*/
+        RedisCacheManager cacheManager = RedisCacheManager.builder(writer).cacheDefaults(redisCacheConfiguration)
+                // .withInitialCacheConfigurations(singletonMap(CacheConstant.SYS_DICT_TABLE_CACHE,
+                //         RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofMinutes(10)).disableCachingNullValues()
+                //                 .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(jackson2JsonRedisSerializer))))
+                // .withInitialCacheConfigurations(singletonMap(CacheConstant.TEST_DEMO_CACHE, RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofMinutes(5)).disableCachingNullValues()))
+                // .withInitialCacheConfigurations(singletonMap(CacheConstant.PLUGIN_MALL_RANKING, RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofHours(24)).disableCachingNullValues()))
+                // .withInitialCacheConfigurations(singletonMap(CacheConstant.PLUGIN_MALL_PAGE_LIST, RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofHours(24)).disableCachingNullValues()))
+                // .transactionAware()
+                .build();
+        //update-end-author:taoyan date:20210316 for:注解CacheEvict根据key删除redis支持通配符*
+        return cacheManager;
     }
 }
