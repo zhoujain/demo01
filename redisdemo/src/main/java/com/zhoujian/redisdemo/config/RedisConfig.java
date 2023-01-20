@@ -118,7 +118,8 @@ public class RedisConfig extends CachingConfigurerSupport {
 
 
     /**
-     * redis 监听配置
+     * redis 监听配置 redis支持发布订阅的模式
+     * RedisMessageListenerContainer 消息监听器提供异步行为的容器
      *
      * @param redisConnectionFactory redis 配置
      * @return
@@ -127,11 +128,17 @@ public class RedisConfig extends CachingConfigurerSupport {
     public RedisMessageListenerContainer redisContainer(RedisConnectionFactory redisConnectionFactory, RedisReceiver redisReceiver, MessageListenerAdapter commonListenerAdapter) {
         RedisMessageListenerContainer container = new RedisMessageListenerContainer();
         container.setConnectionFactory(redisConnectionFactory);
+        // 添加监听器
         container.addMessageListener(commonListenerAdapter, new ChannelTopic(GlobalConstants.REDIS_TOPIC_NAME));
         return container;
     }
 
 
+    /**
+     * 消息监听适配器 监听消息后的处理
+     * @param redisReceiver
+     * @return
+     */
     @Bean
     MessageListenerAdapter commonListenerAdapter(RedisReceiver redisReceiver) {
         MessageListenerAdapter messageListenerAdapter = new MessageListenerAdapter(redisReceiver, "onMessage");
