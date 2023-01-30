@@ -3,6 +3,7 @@ package com.zhoujian.aspectdemo.controller;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.github.xiaoymin.knife4j.annotations.ApiSort;
 
+import com.zhoujian.aspectdemo.aspect.annotation.AutoLog;
 import com.zhoujian.aspectdemo.domain.User;
 import com.zhoujian.aspectdemo.domain.vo.Result;
 import io.swagger.annotations.Api;
@@ -54,5 +55,13 @@ public class TemplateController {
     @ApiOperationSupport(order = 4)
     public Result test3(@RequestBody @ApiParam("用户") User user) {
         return Result.OK("POST测试成功：" + user.toString());
+    }
+
+    @ApiOperation(value = "自动日志测试")
+    @GetMapping(value = "/aspectTest")
+    @ApiOperationSupport(order = 5)
+    @AutoLog(value = "自动日志测试",operateType = 1)
+    public Result aspectTest() {
+        return Result.OK("测试成功");
     }
 }

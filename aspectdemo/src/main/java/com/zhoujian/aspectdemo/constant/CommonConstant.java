@@ -100,4 +100,27 @@ public interface CommonConstant {
     // 文件夹
     public static final String FTP_TYPE_FOLD = "fold";
     public static final String FTP_TYPE_FILE = "file";
+
+    /**
+     * 系统日志类型： 登录
+     */
+    public static final int LOG_TYPE_1 = 1;
+
+    /**
+     * 系统日志类型： 操作
+     */
+    public static final int LOG_TYPE_2 = 2;
+
+    /**未知的*/
+    String UNKNOWN = "unknown";
+
+    /**POST请求*/
+    String HTTP_POST = "POST";
+
+
+    /**PUT请求*/
+    String HTTP_PUT = "PUT";
+
+    /**PATCH请求*/
+    String HTTP_PATCH = "PATCH";
 }

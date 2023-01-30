@@ -49,7 +49,7 @@ public class Swagger2Config {
                 .apiInfo(apiInfo())
                 .select()
                 //此包路径下的类，才生成接口文档
-                .apis(RequestHandlerSelectors.basePackage("com.zhoujian.template"))
+                .apis(RequestHandlerSelectors.basePackage("com.zhoujian.aspectdemo"))
                 //加了ApiOperation注解的类，才生成接口文档
                 .apis(RequestHandlerSelectors.withClassAnnotation(RestController.class))
                 .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
@@ -74,7 +74,7 @@ public class Swagger2Config {
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 // //大标题
-                .title("模板注册API接口文档")
+                .title("切面操作API接口文档")
                 // 版本号
                 .version("1.0")
 //				.termsOfServiceUrl("NO terms of service")
