@@ -66,8 +66,8 @@ class HttpdemoApplicationTests {
 
     @Test
     void test03() {
-//        String url = "http://172.20.20.19:15673/api/queues";
-        String url = "http://172.20.22.91:6020/appsysdataregapi/v2/reg/orgBox";
+        String url = "http://172.20.20.19:15673/api/queues";
+//        String url = "http://172.20.22.91:6020/appsysdataregapi/v2/reg/orgBox";
         HttpHeaders httpHeaders = new HttpHeaders() {{
 
             String auth = "admin" + ":" + "admin1234";

@@ -38,10 +38,10 @@ import static java.util.Collections.singletonMap;
 
 
 @Slf4j
-@EnableCaching
+
 @Configuration
 @Profile("cluster")
-public class RedisClusterConfig extends CachingConfigurerSupport {
+public class RedisClusterConfig {
 
     @Autowired
     RedisProperties redisProperties;
