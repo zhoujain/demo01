@@ -1,20 +1,34 @@
 package com.zhoujian.httpdemo;
 
+import com.alibaba.fastjson.JSONObject;
 import com.zhoujian.httpdemo.utils.RestUtil;
+import org.apache.http.conn.ssl.NoopHostnameVerifier;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.ssl.TrustStrategy;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.http.client.support.BasicAuthenticationInterceptor;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import javax.net.ssl.SSLContext;
 import java.nio.charset.Charset;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.X509Certificate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @SpringBootTest
 class HttpdemoApplicationTests {
@@ -80,4 +94,137 @@ class HttpdemoApplicationTests {
         System.out.println(request.getBody());
     }
 
+    //https请求
+    @Test
+    void test04() {
+        TrustStrategy acceptingTrustStrategy = (X509Certificate[] chain, String authType) -> true;
+
+        SSLContext sslContext = null;
+        try {
+            sslContext = org.apache.http.ssl.SSLContexts.custom()
+                    .loadTrustMaterial(null, acceptingTrustStrategy)
+                    .build();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (KeyManagementException e) {
+            e.printStackTrace();
+        } catch (KeyStoreException e) {
+            e.printStackTrace();
+        }
+
+        SSLConnectionSocketFactory csf = new SSLConnectionSocketFactory(sslContext, NoopHostnameVerifier.INSTANCE);
+
+        CloseableHttpClient httpClient = HttpClients.custom()
+                .setSSLSocketFactory(csf)
+                .build();
+
+        HttpComponentsClientHttpRequestFactory requestFactory =
+                new HttpComponentsClientHttpRequestFactory();
+
+        requestFactory.setHttpClient(httpClient);
+        String url = "https://58.23.12.98:8034/login.do";
+        RestTemplate restTemplate = new RestTemplate(requestFactory);
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        map.add("username","test");
+        map.add("password","098f6bcd4621d373cade4e832627b4f6");
+        map.add("loginType","NORMAL");
+
+//        Map<String,String> map = new HashMap<>();
+//        map.put("username","test");
+//        map.put("password","098f6bcd4621d373cade4e832627b4f6");
+//        map.put("loginType","NORMAL");
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+        //headers.add("Accept", MediaType.APPLICATION_JSON_VALUE);
+        System.out.println(map.toString());
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map,headers);
+        ResponseEntity<JSONObject> exchange = restTemplate.exchange(url, HttpMethod.POST, request, JSONObject.class);
+        System.out.println(exchange.getBody().toJSONString());
+    }
+
+
+    @Test
+    void test05() {
+        TrustStrategy acceptingTrustStrategy = (X509Certificate[] chain, String authType) -> true;
+
+        SSLContext sslContext = null;
+        try {
+            sslContext = org.apache.http.ssl.SSLContexts.custom()
+                    .loadTrustMaterial(null, acceptingTrustStrategy)
+                    .build();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (KeyManagementException e) {
+            e.printStackTrace();
+        } catch (KeyStoreException e) {
+            e.printStackTrace();
+        }
+
+        SSLConnectionSocketFactory csf = new SSLConnectionSocketFactory(sslContext, NoopHostnameVerifier.INSTANCE);
+
+        CloseableHttpClient httpClient = HttpClients.custom()
+                .setSSLSocketFactory(csf)
+                .build();
+
+        HttpComponentsClientHttpRequestFactory requestFactory =
+                new HttpComponentsClientHttpRequestFactory();
+
+        requestFactory.setHttpClient(httpClient);
+        String url = "https://58.23.12.98:8034/login.do?username={username}&password={password}&loginType={loginType}";
+        RestTemplate restTemplate = new RestTemplate(requestFactory);
+        HashMap<String, String> map = new HashMap<>();
+        map.put("username","test");
+        map.put("password","098f6bcd4621d373cade4e832627b4f6");
+        map.put("loginType","NORMAL");
+
+//        Map<String,String> map = new HashMap<>();
+//        map.put("username","test");
+//        map.put("password","098f6bcd4621d373cade4e832627b4f6");
+//        map.put("loginType","NORMAL");
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+//        //headers.add("Accept", MediaType.APPLICATION_JSON_VALUE);
+//        System.out.println(map.toString());
+//        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map,headers);
+        ResponseEntity<JSONObject> exchange = restTemplate.exchange(url, HttpMethod.POST, null, JSONObject.class,map);
+        System.out.println(exchange.getBody().toJSONString());
+    }
+
+    @Test
+    void test06() {
+        TrustStrategy acceptingTrustStrategy = (X509Certificate[] chain, String authType) -> true;
+
+        SSLContext sslContext = null;
+        try {
+            sslContext = org.apache.http.ssl.SSLContexts.custom()
+                    .loadTrustMaterial(null, acceptingTrustStrategy)
+                    .build();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (KeyManagementException e) {
+            e.printStackTrace();
+        } catch (KeyStoreException e) {
+            e.printStackTrace();
+        }
+
+        SSLConnectionSocketFactory csf = new SSLConnectionSocketFactory(sslContext, NoopHostnameVerifier.INSTANCE);
+
+        CloseableHttpClient httpClient = HttpClients.custom()
+                .setSSLSocketFactory(csf)
+                .build();
+
+        HttpComponentsClientHttpRequestFactory requestFactory =
+                new HttpComponentsClientHttpRequestFactory();
+
+        requestFactory.setHttpClient(httpClient);
+        String url = "https://58.23.12.98:8034/login.do?username={username}&password={password}&loginType={loginType}";
+        RestTemplate restTemplate = new RestTemplate(requestFactory);
+        HashMap<String, String> map = new HashMap<>();
+        map.put("username","test");
+        map.put("password","098f6bcd4621d373cade4e832627b4f6");
+        map.put("loginType","NORMAL");
+
+        ResponseEntity<String> template = restTemplate.getForEntity(url, String.class, map);
+        System.out.println(template.getBody().toString());
+    }
 }

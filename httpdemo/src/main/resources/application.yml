@@ -17,9 +17,9 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/jeecg-boot?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8&allowMultiQueries=true
+    url: jdbc:mysql://172.20.20.18:3306/jeecg-boot?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8&allowMultiQueries=true
     username: root
-    password: zhou
+    password: Ntdh@123
     druid:
       # 初始连接数
       initialSize: 5
